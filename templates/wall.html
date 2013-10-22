@@ -1,0 +1,18 @@
+{% extends 'master.html' %}
+<div class="container">
+    {% block body %}
+        <ul>
+        {% for post in {{wall_posts}}() %}
+            <li>post</li>
+        {% endfor %}
+        </ul>
+        
+        {% if [we're logged in] %}
+            <form class="wallpost" action = "{{ url_for("post_to_wall") }}" method = "POST">
+                <h2 class="wallpost-heading">Write something: </h2>
+                <textarea class="input-medium"></textarea>
+                <input type="submit" class="btn btn-lg btn-primary btn-block" value="Submit">
+            </form>
+        {% endif %}
+    {% endblock %}
+</div>

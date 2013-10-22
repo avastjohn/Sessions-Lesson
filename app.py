@@ -4,6 +4,8 @@ import model
 app = Flask(__name__)
 app.secret_key = "shhhhthisisasecret"
 
+model.connect_to_db()
+
 @app.route("/")
 def index():
     if session.get("username"):
@@ -16,18 +18,31 @@ def process_login():
     username = request.form.get("username")
     password = request.form.get("password")
 
-    username = model.authenticate(username, password)
-    if username != None:
+    legit_username = model.authenticate(username, password)
+    if legit_username != None:
         flash("User authenticated!")
-        session["username"] = username
+        session["username"] = legit_username
     else:
         flash("Password incorrect. There may be a ferret stampede in progress!")
 
-    return redirect(url_for("index"))
+    return redirect(url_for("view_user(legit_username)"))
 
 @app.route("/register")
 def register():
     return render_template("register.html")
+
+@app.route("/user/<username>")
+def view_user(username):
+    user_id = model.get_user_by_name(username)
+    wall_posts = model.get_wall_posts_by_user_id(user_id)
+    return render_template("wall.html", 
+                            wall_posts)
+
+@app.route("/user/<username>", methods=["POST"])
+def post_to_wall(person_whos_wall_it_is):
+    wall_owner_user_id = model.get_user_by_name(person_whos_wall_it_is)
+    author_id_logged_in = me(logged_in)
+    
 
 @app.route("/clear")
 def clear_session():
