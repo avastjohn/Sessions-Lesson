@@ -19,6 +19,7 @@ def process_login():
     password = request.form.get("password")
 
     legit_username = model.authenticate(username, password)
+    print legit_username
     if legit_username != None:
         flash("User authenticated!")
         session["username"] = legit_username
@@ -32,12 +33,13 @@ def register():
     return render_template("register.html")
 
 @app.route("/user/<username>")
+# orange 'username' is from 'legit_username' rtn from process_login
 def view_user(username):
     user_id = model.get_user_by_name(username)
-    print user_id
     wall_posts = model.get_wall_posts_by_user_id(user_id)
     return render_template("wall.html", 
-                            wall_posts)
+                            # orange 'wallpost' gets fed to HTML 
+                            wallpost = wall_posts)
 
 # @app.route("/user/<username>", methods=["POST"])
 # def post_to_wall(person_whos_wall_it_is):
