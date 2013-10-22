@@ -25,7 +25,7 @@ def process_login():
     else:
         flash("Password incorrect. There may be a ferret stampede in progress!")
 
-    return redirect(url_for("view_user(legit_username)"))
+    return redirect(url_for("view_user", username = legit_username))
 
 @app.route("/register")
 def register():
@@ -34,14 +34,15 @@ def register():
 @app.route("/user/<username>")
 def view_user(username):
     user_id = model.get_user_by_name(username)
+    print user_id
     wall_posts = model.get_wall_posts_by_user_id(user_id)
     return render_template("wall.html", 
                             wall_posts)
 
-@app.route("/user/<username>", methods=["POST"])
-def post_to_wall(person_whos_wall_it_is):
-    wall_owner_user_id = model.get_user_by_name(person_whos_wall_it_is)
-    author_id_logged_in = me(logged_in)
+# @app.route("/user/<username>", methods=["POST"])
+# def post_to_wall(person_whos_wall_it_is):
+#     wall_owner_user_id = model.get_user_by_name(person_whos_wall_it_is)
+#     author_id_logged_in = me(logged_in)
     
 
 @app.route("/clear")

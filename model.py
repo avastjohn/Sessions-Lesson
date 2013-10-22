@@ -25,6 +25,7 @@ def authenticate(username, password):
 def get_user_by_name(username):
 # returns id for a user
     query = "SELECT id FROM users WHERE username = ?"
+    connect_to_db()
     DB.execute(query, (username,))
     id_from_users = DB.fetchone()
     return id_from_users
@@ -32,6 +33,7 @@ def get_user_by_name(username):
 def get_wall_posts_by_user_id(id_from_users):
 # returns wall posts for a user's wall
     query = "SELECT author_id, created_at, content FROM wall_posts WHERE owner_id = ?"
+    connect_to_db()
     DB.execute(query, (id_from_users,))
     wall_results = DB.fetchall()
     return wall_results
